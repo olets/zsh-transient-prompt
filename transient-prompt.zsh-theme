@@ -13,8 +13,8 @@ typeset -g TRANSIENT_PROMPT_TRANSIENT_PROMPT=${TRANSIENT_PROMPT_TRANSIENT_PROMPT
 typeset -g TRANSIENT_PROMPT_TRANSIENT_RPROMPT=${TRANSIENT_PROMPT_TRANSIENT_RPROMPT-$TRANSIENT_PROMPT_RPROMPT}
 
 function _transient_prompt_init() {
-  [[ -c /dev/null ]]  ||  return
-  zmodload zsh/system ||  return
+  [[ -c /dev/null ]] || return
+  zmodload zsh/system || return
 
   TRANSIENT_PROMPT_FIRST_LINE=1
 
@@ -29,7 +29,8 @@ function _transient_prompt_init() {
     do_nothing() {
       true
     }
-    precmd_functions=(do_nothing)
+
+    precmd_functions=( do_nothing )
   }
 
   precmd_functions+=_transient_prompt_precmd
