@@ -6,8 +6,7 @@
 # https://codeberg.org/olets/zsh-transient-prompt
 # Copyright (©) 2024-present Henry Bley-Vroman
 
-[[ -c /dev/null ]]  ||  return
-zmodload zsh/system ||  return
+typeset -gi TRANSIENT_PROMPT_FIRST_LINE
 
 function set_prompt() {
   ## Set the values of PROMPT, RPROMPT, and TRANSIENT_PROMPT here
@@ -18,18 +17,11 @@ function set_prompt() {
   TRANSIENT_PROMPT='%# '
 }
 
-typeset -gi TRANSIENT_PROMPT_FIRST_LINE
-TRANSIENT_PROMPT_FIRST_LINE=1
-
-set_prompt
-
-zle -N send-break _transient_prompt_widget-send-break
 function _transient_prompt_widget-send-break() {
   _transient_prompt_widget-zle-line-finish
   zle .send-break
 }
 
-zle -N zle-line-finish _transient_prompt_widget-zle-line-finish
 function _transient_prompt_widget-zle-line-finish() {
   (( ! _transient_prompt_fd )) && {
     sysopen -r -o cloexec -u _transient_prompt_fd /dev/null
@@ -47,15 +39,6 @@ function _transient_prompt_restore_prompt() {
   zle -R
 }
 
-(( ${+precmd_functions} )) || typeset -ga precmd_functions
-(( ${#precmd_functions} )) || {
-  do_nothing() {
-    true
-  }
-  precmd_functions=(do_nothing)
-}
-
-precmd_functions+=_transient_prompt_precmd
 function _transient_prompt_precmd() {
   TRANSIENT_PROMPT_FIRST_LINE=0
 
@@ -64,3 +47,28 @@ function _transient_prompt_precmd() {
     return $(( 128 + $1 ))
   }
 }
+
+function _transient_prompt_init() {
+  [[ -c /dev/null ]]  ||  return
+  zmodload zsh/system ||  return
+
+  TRANSIENT_PROMPT_FIRST_LINE=1
+
+  set_prompt
+
+  zle -N send-break _transient_prompt_widget-send-break
+
+  zle -N zle-line-finish _transient_prompt_widget-zle-line-finish
+
+  (( ${+precmd_functions} )) || typeset -ga precmd_functions
+  (( ${#precmd_functions} )) || {
+    do_nothing() {
+      true
+    }
+    precmd_functions=(do_nothing)
+  }
+
+  precmd_functions+=_transient_prompt_precmd
+}
+
+_transient_prompt_init
