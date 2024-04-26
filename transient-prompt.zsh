@@ -9,7 +9,10 @@
 typeset -gi TRANSIENT_PROMPT_FIRST_LINE
 
 function set_prompt() {
-  ## Set the values of PROMPT, RPROMPT, and TRANSIENT_PROMPT here
+  # Optionally set the values of any of PROMPT,
+  # RPROMPT, TRANSIENT_PROMPT, and/or
+  # TRANSIENT_RPROMPT here
+
   PROMPT="%~"$'\n''%# '
   (( TRANSIENT_PROMPT_FIRST_LINE )) || PROMPT=$'\n'$PROMPT
 
@@ -68,7 +71,7 @@ function _transient_prompt_widget-zle-line-finish() {
     sysopen -r -o cloexec -u _transient_prompt_fd /dev/null
     zle -F $_transient_prompt_fd _transient_prompt_restore_prompt
   }
-  zle && PROMPT=${TRANSIENT_PROMPT-$PROMPT} RPROMPT= zle reset-prompt && zle -R
+  zle && PROMPT=${TRANSIENT_PROMPT-$PROMPT} RPROMPT=${TRANSIENT_RPROMPT-$RPROMPT} zle reset-prompt && zle -R
 }
 
 _transient_prompt_init
