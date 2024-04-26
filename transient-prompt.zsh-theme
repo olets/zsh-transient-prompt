@@ -11,6 +11,11 @@ typeset -g TRANSIENT_PROMPT_PROMPT=${TRANSIENT_PROMPT_PROMPT-$PROMPT}
 typeset -g TRANSIENT_PROMPT_RPROMPT=${TRANSIENT_PROMPT_RPROMPT-$RPROMPT}
 typeset -g TRANSIENT_PROMPT_TRANSIENT_PROMPT=${TRANSIENT_PROMPT_TRANSIENT_PROMPT-$TRANSIENT_PROMPT_PROMPT}
 typeset -g TRANSIENT_PROMPT_TRANSIENT_RPROMPT=${TRANSIENT_PROMPT_TRANSIENT_RPROMPT-$TRANSIENT_PROMPT_RPROMPT}
+typeset -gA TRANSIENT_PROMPT_ENV
+
+if ! [[ $(whence TRANSIENT_PROMPT_PRETRANSIENT) ]]; then
+  function TRANSIENT_PROMPT_PRETRANSIENT() { true }
+fi
 
 function _transient_prompt_init() {
   [[ -c /dev/null ]] || return
@@ -75,13 +80,37 @@ function _transient_prompt_widget-send-break() {
 }
 
 function _transient_prompt_widget-zle-line-finish() {
+  local key
+  local value
+
   (( ! _transient_prompt_fd )) && {
     sysopen -r -o cloexec -u _transient_prompt_fd /dev/null
     zle -F $_transient_prompt_fd _transient_prompt_restore_prompt
   }
+
+  # cannot use `for key value in ${(kv)…}` because that has undesired results when values are empty
+  for key in ${(k)TRANSIENT_PROMPT_ENV}; do
+    value=$TRANSIENT_PROMPT_ENV[$key]
+
+    # back up context
+    typeset -g _transient_prompt_${key}_saved=${(P)key}
+
+    # apply transient prompt context
+    typeset -g "$key"="$value"
+  done
+
+  TRANSIENT_PROMPT_PRETRANSIENT
   _transient_prompt_toggle_transient 1
   
   zle && zle reset-prompt && zle -R
+    
+  # restore backed up context
+  local key_saved
+  for key in ${(k)TRANSIENT_PROMPT_ENV}; do
+    typeset key_saved=_transient_prompt_${key}_saved
+    typeset -g $key=${(P)key_saved}
+    unset $key_saved
+  done
 }
 
 _transient_prompt_init
