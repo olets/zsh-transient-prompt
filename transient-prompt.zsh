@@ -26,12 +26,6 @@ TRANSIENT_PROMPT_FIRST_LINE=1
 
 set_prompt
 
-zle -N clear-screen _transient_prompt_widget-clear-screen
-function _transient_prompt_widget-clear-screen() {
-  TRANSIENT_PROMPT_FIRST_LINE=1
-  zle .clear-screen
-}
-
 zle -N send-break _transient_prompt_widget-send-break
 function _transient_prompt_widget-send-break() {
   _transient_prompt_widget-zle-line-finish
