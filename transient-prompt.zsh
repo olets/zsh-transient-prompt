@@ -25,7 +25,7 @@ function set_prompt() {
 typeset -g _transient_prompt_newline=
 function _transient_prompt_set_prompt() {
   set_prompt
-  PROMPT='$_transient_prompt_newline'$PROMPT
+  PROMPT=$_transient_prompt_newline$PROMPT
 }
 _transient_prompt_set_prompt
 
