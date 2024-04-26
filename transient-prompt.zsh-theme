@@ -18,7 +18,7 @@ function _transient_prompt_init() {
 
   TRANSIENT_PROMPT_FIRST_LINE=1
 
-  _transient_prompt_set_prompt
+  _transient_prompt_toggle_transient 0
 
   zle -N send-break _transient_prompt_widget-send-break
 
@@ -48,16 +48,24 @@ function _transient_prompt_restore_prompt() {
   exec {1}>&-
   (( ${+1} )) && zle -F $1
   _transient_prompt_fd=0
-  _transient_prompt_set_prompt
+  _transient_prompt_toggle_transient 0
   zle reset-prompt
   zle -R
 }
 
-function _transient_prompt_set_prompt() {
+function _transient_prompt_toggle_transient() {
+  local -i transient
+  transient=${1-0}
+
+  if (( transient )); then
+    PROMPT=$TRANSIENT_PROMPT_TRANSIENT_PROMPT
+    RPROMPT=$TRANSIENT_PROMPT_TRANSIENT_RPROMPT
+
+    return
+  fi
+
   PROMPT=$TRANSIENT_PROMPT_PROMPT
   RPROMPT=$TRANSIENT_PROMPT_RPROMPT
-  TRANSIENT_PROMPT=$TRANSIENT_PROMPT_TRANSIENT_PROMPT
-  TRANSIENT_RPROMPT=$TRANSIENT_PROMPT_TRANSIENT_RPROMPT
 }
 
 function _transient_prompt_widget-send-break() {
@@ -70,8 +78,9 @@ function _transient_prompt_widget-zle-line-finish() {
     sysopen -r -o cloexec -u _transient_prompt_fd /dev/null
     zle -F $_transient_prompt_fd _transient_prompt_restore_prompt
   }
+  _transient_prompt_toggle_transient 1
   
-  zle && PROMPT=$TRANSIENT_PROMPT RPROMPT=$TRANSIENT_RPROMPT zle reset-prompt && zle -R
+  zle && zle reset-prompt && zle -R
 }
 
 _transient_prompt_init
