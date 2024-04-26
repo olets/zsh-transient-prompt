@@ -26,7 +26,8 @@ typeset -g _transient_prompt_newline=
 function _transient_prompt_set_prompt {
   set_prompt
   PROMPT='$_transient_prompt_newline'$PROMPT
-}; _transient_prompt_set_prompt
+}
+_transient_prompt_set_prompt
 
 zle -N clear-screen _transient_prompt_widget-clear-screen
 function _transient_prompt_widget-clear-screen {
@@ -60,7 +61,9 @@ function _transient_prompt_restore_prompt {
 
 (( ${+precmd_functions} )) || typeset -ga precmd_functions
 (( ${#precmd_functions} )) || {
-  do_nothing() {true}
+  do_nothing() {
+    true
+  }
   precmd_functions=(do_nothing)
 }
 
@@ -68,9 +71,15 @@ precmd_functions+=_transient_prompt_precmd
 function _transient_prompt_precmd {
   # We define _transient_prompt_precmd in this way because we don't want
   # _transient_prompt_newline to be defined on the very first precmd.
-  TRAPINT() {zle && _transient_prompt_widget-zle-line-finish; return $(( 128 + $1 ))}
+  TRAPINT() {
+    zle && _transient_prompt_widget-zle-line-finish
+    return $(( 128 + $1 ))
+  }
   function _transient_prompt_precmd {
-    TRAPINT() {zle && _transient_prompt_widget-zle-line-finish; return $(( 128 + $1 ))}
+    TRAPINT() {
+      zle && _transient_prompt_widget-zle-line-finish
+      return $(( 128 + $1 ))
+    }
     _transient_prompt_newline=$'\n'
   }
 }
