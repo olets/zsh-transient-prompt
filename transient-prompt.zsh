@@ -14,17 +14,14 @@ zmodload zsh/system ||  return
 
 function set_prompt() {
   ## Set the values of PROMPT, RPROMPT, and TRANSIENT_PROMPT here
-  PROMPT='%~'$'\n''%# '
+  PROMPT=$_transient_prompt_newline'%~'$'\n''%# '
   RPROMPT='%(?..%B%F{1}%?%f%b)'
   TRANSIENT_PROMPT='%# '
 }
 
 typeset -g _transient_prompt_newline=
-function _transient_prompt_set_prompt() {
-  set_prompt
-  PROMPT=$_transient_prompt_newline$PROMPT
-}
-_transient_prompt_set_prompt
+
+set_prompt
 
 zle -N clear-screen _transient_prompt_widget-clear-screen
 function _transient_prompt_widget-clear-screen() {
@@ -51,7 +48,7 @@ function _transient_prompt_restore_prompt() {
   exec {1}>&-
   (( ${+1} )) && zle -F $1
   _transient_prompt_fd=0
-  _transient_prompt_set_prompt
+  set_prompt
   zle reset-prompt
   zle -R
 }
