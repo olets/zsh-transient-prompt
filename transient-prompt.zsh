@@ -12,20 +12,13 @@ typeset -g TRANSIENT_PROMPT_RPROMPT=${TRANSIENT_PROMPT_RPROMPT-$RPROMPT}
 typeset -g TRANSIENT_PROMPT_TRANSIENT_PROMPT=${TRANSIENT_PROMPT_TRANSIENT_PROMPT-$PROMPT}
 typeset -g TRANSIENT_PROMPT_TRANSIENT_RPROMPT=${TRANSIENT_PROMPT_TRANSIENT_RPROMPT-$RPROMPT}
 
-function set_prompt() {
-  PROMPT=$TRANSIENT_PROMPT_PROMPT
-  RPROMPT=$TRANSIENT_PROMPT_RPROMPT
-  TRANSIENT_PROMPT=$TRANSIENT_PROMPT_TRANSIENT_PROMPT
-  TRANSIENT_RPROMPT=$TRANSIENT_PROMPT_TRANSIENT_RPROMPT
-}
-
 function _transient_prompt_init() {
   [[ -c /dev/null ]]  ||  return
   zmodload zsh/system ||  return
 
   TRANSIENT_PROMPT_FIRST_LINE=1
 
-  set_prompt
+  _transient_prompt_set_prompt
 
   zle -N send-break _transient_prompt_widget-send-break
 
@@ -55,9 +48,16 @@ function _transient_prompt_restore_prompt() {
   exec {1}>&-
   (( ${+1} )) && zle -F $1
   _transient_prompt_fd=0
-  set_prompt
+  _transient_prompt_set_prompt
   zle reset-prompt
   zle -R
+}
+
+function _transient_prompt_set_prompt() {
+  PROMPT=$TRANSIENT_PROMPT_PROMPT
+  RPROMPT=$TRANSIENT_PROMPT_RPROMPT
+  TRANSIENT_PROMPT=$TRANSIENT_PROMPT_TRANSIENT_PROMPT
+  TRANSIENT_RPROMPT=$TRANSIENT_PROMPT_TRANSIENT_RPROMPT
 }
 
 function _transient_prompt_widget-send-break() {
