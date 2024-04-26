@@ -12,14 +12,11 @@
 [[ -c /dev/null ]]  ||  return
 zmodload zsh/system ||  return
 
-## Set the transient prompt PROMPT here -
-TRANSIENT_PROMPT='%# '   # Sample value
-
 function set_prompt() {
-  ## Set the values of PROMPT and RPROMPT here
-  # Sample values given below
+  ## Set the values of PROMPT, RPROMPT, and TRANSIENT_PROMPT here
   PROMPT='%~'$'\n''%# '
   RPROMPT='%(?..%B%F{1}%?%f%b)'
+  TRANSIENT_PROMPT='%# '
 }
 
 typeset -g _transient_prompt_newline=
