@@ -71,16 +71,10 @@ precmd_functions+=_transient_prompt_precmd
 function _transient_prompt_precmd() {
   # We define _transient_prompt_precmd in this way because we don't want
   # _transient_prompt_newline to be defined on the very first precmd.
+  _transient_prompt_newline=$'\n'
   TRAPINT() {
     zle && _transient_prompt_widget-zle-line-finish
     return $(( 128 + $1 ))
-  }
-  function _transient_prompt_precmd() {
-    TRAPINT() {
-      zle && _transient_prompt_widget-zle-line-finish
-      return $(( 128 + $1 ))
-    }
-    _transient_prompt_newline=$'\n'
   }
 }
 
