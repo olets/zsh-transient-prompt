@@ -68,7 +68,7 @@ function _transient_prompt_widget-zle-line-finish() {
     sysopen -r -o cloexec -u _transient_prompt_fd /dev/null
     zle -F $_transient_prompt_fd _transient_prompt_restore_prompt
   }
-  zle && PROMPT=$TRANSIENT_PROMPT RPROMPT= zle reset-prompt && zle -R
+  zle && PROMPT=${TRANSIENT_PROMPT-$PROMPT} RPROMPT= zle reset-prompt && zle -R
 }
 
 _transient_prompt_init
