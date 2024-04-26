@@ -7,17 +7,23 @@
 # Copyright (©) 2024-present Henry Bley-Vroman
 
 typeset -gi TRANSIENT_PROMPT_FIRST_LINE
+typeset -g TRANSIENT_PROMPT_PROMPT=${TRANSIENT_PROMPT_PROMPT-'%(1v.'$'\n.)%~'$'\n''%# '}
+typeset -g TRANSIENT_PROMPT_RPROMPT=${TRANSIENT_PROMPT_RPROMPT-'%(?..%B%F{1}%?%f%b)'}
+typeset -g TRANSIENT_PROMPT_TRANSIENT_PROMPT=${TRANSIENT_PROMPT_TRANSIENT_PROMPT-'%# '}
+typeset -g TRANSIENT_PROMPT_TRANSIENT_RPROMPT=${TRANSIENT_PROMPT_TRANSIENT_RPROMPT-}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd my-precmd
+function my-precmd() {
+  psvar=( )
+  (( TRANSIENT_PROMPT_FIRST_LINE )) || psvar+=( x )
+}
 
 function set_prompt() {
-  # Optionally set the values of any of PROMPT,
-  # RPROMPT, TRANSIENT_PROMPT, and/or
-  # TRANSIENT_RPROMPT here
-
-  PROMPT="%~"$'\n''%# '
-  (( TRANSIENT_PROMPT_FIRST_LINE )) || PROMPT=$'\n'$PROMPT
-
-  RPROMPT='%(?..%B%F{1}%?%f%b)'
-  TRANSIENT_PROMPT='%# '
+  PROMPT=$TRANSIENT_PROMPT_PROMPT
+  RPROMPT=$TRANSIENT_PROMPT_RPROMPT
+  TRANSIENT_PROMPT=$TRANSIENT_PROMPT_TRANSIENT_PROMPT
+  TRANSIENT_RPROMPT=$TRANSIENT_PROMPT_TRANSIENT_RPROMPT
 }
 
 function _transient_prompt_init() {
@@ -71,7 +77,8 @@ function _transient_prompt_widget-zle-line-finish() {
     sysopen -r -o cloexec -u _transient_prompt_fd /dev/null
     zle -F $_transient_prompt_fd _transient_prompt_restore_prompt
   }
-  zle && PROMPT=${TRANSIENT_PROMPT-$PROMPT} RPROMPT=${TRANSIENT_RPROMPT-$RPROMPT} zle reset-prompt && zle -R
+  
+  zle && PROMPT=$TRANSIENT_PROMPT RPROMPT=$TRANSIENT_RPROMPT zle reset-prompt && zle -R
 }
 
 _transient_prompt_init
