@@ -14,18 +14,21 @@ zmodload zsh/system ||  return
 
 function set_prompt() {
   ## Set the values of PROMPT, RPROMPT, and TRANSIENT_PROMPT here
-  PROMPT=$_transient_prompt_newline'%~'$'\n''%# '
+  PROMPT="%~"$'\n''%# '
+  (( TRANSIENT_PROMPT_FIRST_LINE )) || PROMPT=$'\n'$PROMPT
+
   RPROMPT='%(?..%B%F{1}%?%f%b)'
   TRANSIENT_PROMPT='%# '
 }
 
-typeset -g _transient_prompt_newline=
+typeset -gi TRANSIENT_PROMPT_FIRST_LINE
+TRANSIENT_PROMPT_FIRST_LINE=1
 
 set_prompt
 
 zle -N clear-screen _transient_prompt_widget-clear-screen
 function _transient_prompt_widget-clear-screen() {
-  _transient_prompt_newline=
+  TRANSIENT_PROMPT_FIRST_LINE=1
   zle .clear-screen
 }
 
@@ -63,9 +66,8 @@ function _transient_prompt_restore_prompt() {
 
 precmd_functions+=_transient_prompt_precmd
 function _transient_prompt_precmd() {
-  # We define _transient_prompt_precmd in this way because we don't want
-  # _transient_prompt_newline to be defined on the very first precmd.
-  _transient_prompt_newline=$'\n'
+  TRANSIENT_PROMPT_FIRST_LINE=0
+
   TRAPINT() {
     zle && _transient_prompt_widget-zle-line-finish
     return $(( 128 + $1 ))
