@@ -15,7 +15,7 @@ zmodload zsh/system ||  return
 ## Set the transient prompt PROMPT here -
 TRANSIENT_PROMPT='%# '   # Sample value
 
-function set_prompt {
+function set_prompt() {
   ## Set the values of PROMPT and RPROMPT here
   # Sample values given below
   PROMPT='%~'$'\n''%# '
@@ -23,26 +23,26 @@ function set_prompt {
 }
 
 typeset -g _transient_prompt_newline=
-function _transient_prompt_set_prompt {
+function _transient_prompt_set_prompt() {
   set_prompt
   PROMPT='$_transient_prompt_newline'$PROMPT
 }
 _transient_prompt_set_prompt
 
 zle -N clear-screen _transient_prompt_widget-clear-screen
-function _transient_prompt_widget-clear-screen {
+function _transient_prompt_widget-clear-screen() {
   _transient_prompt_newline=
   zle .clear-screen
 }
 
 zle -N send-break _transient_prompt_widget-send-break
-function _transient_prompt_widget-send-break {
+function _transient_prompt_widget-send-break() {
   _transient_prompt_widget-zle-line-finish
   zle .send-break
 }
 
 zle -N zle-line-finish _transient_prompt_widget-zle-line-finish
-function _transient_prompt_widget-zle-line-finish {
+function _transient_prompt_widget-zle-line-finish() {
   (( ! _transient_prompt_fd )) && {
     sysopen -r -o cloexec -u _transient_prompt_fd /dev/null
     zle -F $_transient_prompt_fd _transient_prompt_restore_prompt
@@ -50,7 +50,7 @@ function _transient_prompt_widget-zle-line-finish {
   zle && PROMPT=$TRANSIENT_PROMPT RPROMPT= zle reset-prompt && zle -R
 }
 
-function _transient_prompt_restore_prompt {
+function _transient_prompt_restore_prompt() {
   exec {1}>&-
   (( ${+1} )) && zle -F $1
   _transient_prompt_fd=0
@@ -68,14 +68,14 @@ function _transient_prompt_restore_prompt {
 }
 
 precmd_functions+=_transient_prompt_precmd
-function _transient_prompt_precmd {
+function _transient_prompt_precmd() {
   # We define _transient_prompt_precmd in this way because we don't want
   # _transient_prompt_newline to be defined on the very first precmd.
   TRAPINT() {
     zle && _transient_prompt_widget-zle-line-finish
     return $(( 128 + $1 ))
   }
-  function _transient_prompt_precmd {
+  function _transient_prompt_precmd() {
     TRAPINT() {
       zle && _transient_prompt_widget-zle-line-finish
       return $(( 128 + $1 ))
