@@ -1,3 +1,11 @@
+#!/usr/bin/env zsh
+
+# zsh-transient-prompt
+# pre-alpha
+# April 26 2024
+# https://codeberg.org/olets/zsh-transient-prompt
+# Copyright (©) 2024-present Henry Bley-Vroman
+
 # https://gist.github.com/subnut/3af65306fbecd35fe2dda81f59acf2b2, revision March 10 2022
 #### Transient prompt with transient newline before prompt
 
