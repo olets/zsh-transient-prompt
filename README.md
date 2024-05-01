@@ -20,6 +20,131 @@ Either clone this repo and add `source path/to/transient-prompt.zsh-theme` to yo
 1. Download [the latest zsh-transient-prompt binary](https://codeberg.org/olets/zsh-transient-prompt/releases/latest)
 1. Put the file `transient-prompt.zsh-theme` in a directory in your `PATH`
 
+## Usage
+
+`zsh-transient-prompt`'s default prompt is zsh's default prompt. So simply installing and loading `zsh-transient-prompt` will not change anything.
+
+`.zshrc`
+
+```shell
+# load zsh-transient-prompt here
+```
+
+Terminal
+
+```shell
+dev@olets zsh-transient-prompt % echo transient
+transient
+dev@olets zsh-transient-prompt % echo prompt
+prompt
+dev@olets zsh-transient-prompt %
+```
+
+At the very least, set the variable `TRANSIENT_PROMPT_TRANSIENT_PROMPT` (that's not a typo. The `zsh-transient-prompt` configuration variables are `TRANSIENT_PROMPT_<key>`). For example
+
+`.zshrc`
+
+```shell
+TRANSIENT_PROMPT_TRANSIENT_PROMPT='% '
+# load zsh-transient-prompt here
+```
+
+Terminal
+
+```shell
+% echo transient
+transient
+% echo prompt
+prompt
+dev@olets zsh-transient-prompt %
+```
+
+See the zsh prompt expansion documentation <https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html> to learn what all you can do, or check out the [Examples](#examples) below.
+
+## Options
+
+Option | Type | Default | Notes
+---|---|---|---
+`TRANSIENT_PROMPT_ENV` | associative array | `( )` | Variables set when redrawing the previous command's prompt and rprompt
+`TRANSIENT_PROMPT_PRETRANSIENT` | function | `{ true }` | Run before redrawing the previous command's prompt and rprompt
+`TRANSIENT_PROMPT_PROMPT` | string | `$PROMPT` | The current command line's prompt
+`TRANSIENT_PROMPT_RPROMPT` | string | `$RPROMPT` | The current command line's rprompt
+`TRANSIENT_PROMPT_TRANSIENT_PROMPT` | string | `$TRANSIENT_PROMPT_PROMPT` | Previous command lines' prompt
+`TRANSIENT_PROMPT_TRANSIENT_RPROMPT` | string | `$TRANSIENT_PROMPT_RPROMPT` | Previous command lines' rprompt
+
+## Exports
+
+Export | Type | Notes
+---|---|---
+`TRANSIENT_PROMPT_FIRST_LINE` | integer | `1` if on the first line, otherwise `0`
+
+## Examples
+
+1. With the following configuration, the active command line's prompt is a linebreak, then CWD, then another linebreak, then % or # depending on whether the user does not or does have privileges, and over on the right the previous command's exit code if not zero; previous commands' prompts are simply % or # depending on whether the user did not or did have privileges.
+
+    `.zshrc`
+
+    ```shell
+    # configure zsh-transient-prompt
+    TRANSIENT_PROMPT_PROMPT='%(1v.'$'\n.)%~'$'\n''%# '
+    TRANSIENT_PROMPT_RPROMPT='%(?..%B%F{1}%?%f%b)'
+    TRANSIENT_PROMPT_TRANSIENT_PROMPT='%# '
+    TRANSIENT_PROMPT_TRANSIENT_RPROMPT=
+
+    # load the add-zsh-hook function which ships with zsh
+    autoload -Uz add-zsh-hook
+
+    # add a "precmd" hook to run the function precmd_set_psvar before drawing the prompt
+    add-zsh-hook precmd precmd_set_psvar
+
+    function precmd_set_psvar() {
+      # reset the psvar array
+      psvar=( )
+
+      # if not the first line, add an element to psvar
+      (( TRANSIENT_PROMPT_FIRST_LINE )) || psvar+=( 1 )
+    }
+
+    # load zsh-transient-prompt here
+    ```
+
+    Terminal
+
+    ```shell
+    % echo transient
+    transient
+    % echo prompt
+    prompt
+    % ctrl-c'd
+
+    ~/olets/zsh-transient-prompt
+    %                                             130
+    ```
+
+1. Add transient prompt as an enhancement to [Pure](https://codeberg.org/sindresorhus/pure). This is proof-of-concept and may have unacceptable rough edges — for example if you `ctrl-c`, the following prompt doesn't show the CWD. Values were determined by loading Pure _without_ zsh-transient-prompt and then running `typeset -m PROMPT`.
+
+    `.zshrc`
+
+    ```shell
+    TRANSIENT_PROMPT_PROMPT='%(12V.%F{$prompt_pure_colors[virtualenv]}%12v%f .)%(?.%F{$prompt_pure_colors[prompt:success]}.%F{$prompt_pure_colors[prompt:error]})${prompt_pure_state[prompt]} %f'
+    TRANSIENT_PROMPT_TRANSIENT_PROMPT='%(12V.%F{$prompt_pure_colors[virtualenv]}%12v%f .)%(?.%F{$prompt_pure_colors[prompt:success]}.%F{$prompt_pure_colors[prompt:error]})${prompt_pure_state[prompt]} %f'
+    # load pure
+    # load zsh-transient-prompt
+    ```
+
+    Terminal (in real life this would have colors too)
+
+    ```shell
+    ❯ echo transient
+    transient
+
+    ❯ echo prompt
+    prompt
+
+    ~/olets/zsh-transient-prompt main
+    ❯ 
+    ```
+
 ## Changelog
 
 See the [CHANGELOG](CHANGELOG.md) file.
