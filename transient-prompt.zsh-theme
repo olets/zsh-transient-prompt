@@ -21,7 +21,7 @@ function _transient_prompt_init() {
   [[ -c /dev/null ]] || return
   zmodload zsh/system || return
 
-  TRANSIENT_PROMPT_FIRST_LINE=1
+  typeset -g TRANSIENT_PROMPT_FIRST_LINE=1
 
   _transient_prompt_toggle_transient 0
 
@@ -42,7 +42,7 @@ function _transient_prompt_init() {
 }
 
 function _transient_prompt_precmd() {
-  TRANSIENT_PROMPT_FIRST_LINE=0
+  typeset -g TRANSIENT_PROMPT_FIRST_LINE=0
 
   TRAPINT() {
     zle && _transient_prompt_widget-zle-line-finish
