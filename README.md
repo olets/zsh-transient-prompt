@@ -77,12 +77,6 @@ Option | Type | Default | Notes
 `TRANSIENT_PROMPT_TRANSIENT_PROMPT` | string | `$TRANSIENT_PROMPT_PROMPT` | Previous command lines' prompt
 `TRANSIENT_PROMPT_TRANSIENT_RPROMPT` | string | `$TRANSIENT_PROMPT_RPROMPT` | Previous command lines' rprompt
 
-## Exports
-
-Export | Type | Notes
----|---|---
-`TRANSIENT_PROMPT_FIRST_LINE` | integer | `1` if on the first line, otherwise `0`
-
 ## Examples
 
 1. With the following configuration, the active command line's prompt is a linebreak, then CWD, then another linebreak, then % or # depending on whether the user does not or does have privileges, and over on the right the previous command's exit code if not zero; previous commands' prompts are simply % or # depending on whether the user did not or did have privileges.

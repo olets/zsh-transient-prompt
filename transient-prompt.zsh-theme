@@ -6,7 +6,6 @@
 # https://codeberg.org/olets/zsh-transient-prompt
 # Copyright (©) 2024-present Henry Bley-Vroman
 
-typeset -gi TRANSIENT_PROMPT_FIRST_LINE
 typeset -g TRANSIENT_PROMPT_PROMPT=${TRANSIENT_PROMPT_PROMPT-$PROMPT}
 typeset -g TRANSIENT_PROMPT_RPROMPT=${TRANSIENT_PROMPT_RPROMPT-$RPROMPT}
 typeset -g TRANSIENT_PROMPT_TRANSIENT_PROMPT=${TRANSIENT_PROMPT_TRANSIENT_PROMPT-$TRANSIENT_PROMPT_PROMPT}
@@ -20,8 +19,6 @@ fi
 function _transient_prompt_init() {
   [[ -c /dev/null ]] || return
   zmodload zsh/system || return
-
-  typeset -g TRANSIENT_PROMPT_FIRST_LINE=1
 
   _transient_prompt_toggle_transient 0
 
@@ -42,8 +39,6 @@ function _transient_prompt_init() {
 }
 
 function _transient_prompt_precmd() {
-  typeset -g TRANSIENT_PROMPT_FIRST_LINE=0
-
   TRAPINT() {
     zle && _transient_prompt_widget-zle-line-finish
     return $(( 128 + $1 ))
