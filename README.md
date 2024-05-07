@@ -4,7 +4,11 @@ Add a transient prompt to your zsh command line.
 
 Use it as your theme. Or to add transient prompt support to an existing theme (implementation complexity will depend on the existing theme).
 
-> 💅 Don't want to write your own theme? Check out mine, [Hometown](https://hometown-prompt.olets.dev/).
+> &nbsp;
+>
+> 💅 Don't want to write your own theme? Check out mine, [Hometown](https://hometown-prompt.olets.dev/). It supports transient prompt!
+>
+> &nbsp;
 
 ## Installation
 
@@ -29,42 +33,29 @@ Either clone this repo and add `source path/to/transient-prompt.zsh-theme` to yo
 
 `zsh-transient-prompt`'s default prompt is zsh's default prompt. So simply installing and loading `zsh-transient-prompt` will not change anything.
 
-`.zshrc`
-
-```shell
-# load zsh-transient-prompt here
-```
-
-Terminal
-
-```shell
-dev@olets zsh-transient-prompt % echo transient
-transient
-dev@olets zsh-transient-prompt % echo prompt
-prompt
-dev@olets zsh-transient-prompt %
-```
-
 At the very least, set the variable `TRANSIENT_PROMPT_TRANSIENT_PROMPT` (that's not a typo. The `zsh-transient-prompt` configuration variables are `TRANSIENT_PROMPT_<key>`). For example
 
 `.zshrc`
 
 ```shell
 TRANSIENT_PROMPT_TRANSIENT_PROMPT='% '
-# load zsh-transient-prompt here
+# load zsh-transient-prompt here here
 ```
 
 Terminal
 
 ```shell
-% echo transient
-transient
-% echo prompt
-prompt
-dev@olets zsh-transient-prompt %
+% echo transient prompt
+transient prompt
+% cd ~/my-git-repo
+olets@olets.dev my-git-repo %
 ```
 
-See the zsh prompt expansion documentation <https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html> to learn what all you can do, or check out the [Examples](#examples) below.
+See the zsh prompt expansion documentation <https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html> to learn about what dynamic information out-of-the-box zsh can display in prompts.
+
+To add transient prompt support to your existing prompt, start by running `typeset -m PROMPT`. Then in `.zshrc`, set `TRANSIENT_PROMPT_TRANSIENT_PROMPT` to that value, in single quotations (`''`).
+
+See the [Recipes](#recipes) below for more.
 
 ## Options
 
@@ -73,74 +64,181 @@ Option | Type | Default | Notes
 `TRANSIENT_PROMPT_ENV` | associative array | `( )` | Variables set when redrawing the previous command's prompt and rprompt
 `TRANSIENT_PROMPT_PRETRANSIENT` | function | `{ true }` | Run before redrawing the previous command's prompt and rprompt
 `TRANSIENT_PROMPT_PROMPT` | string | `$PROMPT` | The current command line's prompt
-`TRANSIENT_PROMPT_RPROMPT` | string | `$RPROMPT` | The current command line's rprompt
+`TRANSIENT_PROMPT_RPROMPT` | string | `$RPROMPT` | The current command line's right prompt
 `TRANSIENT_PROMPT_TRANSIENT_PROMPT` | string | `$TRANSIENT_PROMPT_PROMPT` | Previous command lines' prompt
-`TRANSIENT_PROMPT_TRANSIENT_RPROMPT` | string | `$TRANSIENT_PROMPT_RPROMPT` | Previous command lines' rprompt
+`TRANSIENT_PROMPT_TRANSIENT_RPROMPT` | string | `$TRANSIENT_PROMPT_RPROMPT` | Previous command lines' right prompt
 
-## Examples
+## Recipes
 
-1. With the following configuration, the active command line's prompt is a linebreak, then CWD, then another linebreak, then % or # depending on whether the user does not or does have privileges, and over on the right the previous command's exit code if not zero; previous commands' prompts are simply % or # depending on whether the user did not or did have privileges.
-
-    `.zshrc`
+1. Basic:
 
     ```shell
-    # configure zsh-transient-prompt
-    TRANSIENT_PROMPT_PROMPT='%(1v.'$'\n.)%~'$'\n''%# '
+    ###
+    # Minimal prompt config from the zsh-transient-prompt README
+    ###
+
+    # Prompt is a line break if this isn't the first command line, CWD, line break, `%` or -if user is privileged- `#`
+    TRANSIENT_PROMPT_PROMPT='%(2v.'$'\n.)%~'$'\n''%# '
+
+    # Right prompt is the previous command's non-zero exit code, if any, in bold red
     TRANSIENT_PROMPT_RPROMPT='%(?..%B%F{1}%?%f%b)'
+
+    # Transient prompt is `%` or -if user is privileged- `#`
     TRANSIENT_PROMPT_TRANSIENT_PROMPT='%# '
+
+    # Transient right prompt is empty
     TRANSIENT_PROMPT_TRANSIENT_RPROMPT=
 
-    # load the add-zsh-hook function which ships with zsh
+    # enable zsh's add-zsh-hook function
     autoload -Uz add-zsh-hook
 
     # add a "precmd" hook to run the function precmd_set_psvar before drawing the prompt
     add-zsh-hook precmd precmd_set_psvar
 
     function precmd_set_psvar() {
-      # reset the psvar array
-      psvar=( )
-
-      # if not the first line, add an element to psvar
-      (( TRANSIENT_PROMPT_FIRST_LINE )) || psvar+=( 1 )
+      # append an element to the psvar array every prompt for the first two prompts
+      (( psvar[2] )) && return
+      psvar+=( 1 )
     }
 
-    # load zsh-transient-prompt here
+    # load olets/zsh-transient-prompt here
     ```
 
     Terminal
 
-    ```shell
-    % echo transient
-    transient
-    % echo prompt
-    prompt
-    % ctrl-c'd
+    ```
+    % echo transient prompt
+    transient prompt
+    % cd ~/olets/my-git-repo
+    ~/olets/my-git-repo
+    % false
 
-    ~/olets/zsh-transient-prompt
-    %                                             130
+    ~/olets/my-git-repo
+    %                                             1
     ```
 
-1. Add transient prompt as an enhancement to [Pure](https://codeberg.org/sindresorhus/pure). This is proof-of-concept and may have unacceptable rough edges — for example if you `ctrl-c`, the following prompt doesn't show the CWD. Values were determined by loading Pure _without_ zsh-transient-prompt and then running `typeset -m PROMPT`.
-
-    `.zshrc`
+1. Git-aware, using [Git Prompt Kit](https://git-prompt-kit.olets.dev/) for high-performance Git content. This enhances GPK's [basic example](https://git-prompt-kit.olets.dev/example.html).
 
     ```shell
-    TRANSIENT_PROMPT_PROMPT='%(12V.%F{$prompt_pure_colors[virtualenv]}%12v%f .)%(?.%F{$prompt_pure_colors[prompt:success]}.%F{$prompt_pure_colors[prompt:error]})${prompt_pure_state[prompt]} %f'
-    TRANSIENT_PROMPT_TRANSIENT_PROMPT='%(12V.%F{$prompt_pure_colors[virtualenv]}%12v%f .)%(?.%F{$prompt_pure_colors[prompt:success]}.%F{$prompt_pure_colors[prompt:error]})${prompt_pure_state[prompt]} %f'
-    # load pure
-    # load zsh-transient-prompt
+    ###
+    # Git-aware prompt using Git Prompt Kit, from the zsh-transient-prompt README
+    ###
+
+    # Transient prompt is the prompt character
+    TRANSIENT_PROMPT_TRANSIENT_PROMPT=''
+
+    # Prompt is a line break if this isn't the first command line; the CWD; if in a Git repo, the branch or commit, number of commits ahead and/or behind, upstream if set, push remote and number of commits ahead/behind if it's distinct from the upstream, and up to one tag at HEAD; and the prompt character
+    TRANSIENT_PROMPT_PROMPT='%(2v.'$'\n.)$GIT_PROMPT_KIT_CWD ${GIT_PROMPT_KIT_REF:+$GIT_PROMPT_KIT_REF }$GIT_PROMPT_KIT_CHAR '
+
+    # load zsh's add-zsh-hook function here
+    autoload -Uz add-zsh-hook
+
+    # add a "precmd" hook to run the function precmd_set_psvar before drawing the prompt
+    add-zsh-hook precmd precmd_set_psvar
+
+    function precmd_set_psvar() {
+      # append an element to the psvar array every prompt for the first two prompts
+      (( psvar[2] )) && return
+      psvar+=( 1 )
+    }
+
+    # load olets/git-prompt-kit here
+    # load olets/zsh-transient-prompt here
     ```
 
     Terminal (in real life this would have colors too)
 
+    ```
+    % echo transient prompt
+    transient prompt
+    % cd ~/Projects/olets/my-git-repo
+
+    olets/my-git-repo main +2 % 
+    ```
+
+1. Add transient prompt as an enhancement to Sindre Sorhus's [Pure](https://github.com/sindresorhus/pure) prompt. This is proof-of-concept and may have unacceptable rough edges — for example if you `ctrl-c`, the following prompt isn't preceded by a blank line.
+
+    `.zshrc`
+
     ```shell
-    ❯ echo transient
-    transient
+    ###
+    # Pure enhanced with transient prompt, from the zsh-transient-prompt README
+    ###
 
-    ❯ echo prompt
-    prompt
+    TRANSIENT_PROMPT_PROMPT=$'%F{${prompt_pure_colors[path]}}%~%f\n%{\C-M%}%(12V.%F{$prompt_pure_colors[virtualenv]}%12v%f .)%(?.%F{$prompt_pure_colors[prompt:success]}.%F{$prompt_pure_colors[prompt:error]})${prompt_pure_state[prompt]}%f '
+    TRANSIENT_PROMPT_TRANSIENT_PROMPT='%(12V.%F{$prompt_pure_colors[virtualenv]}%12v%f .)%(?.%F{$prompt_pure_colors[prompt:success]}.%F{$prompt_pure_colors[prompt:error]})${prompt_pure_state[prompt]} %f'
+    # load sindresorhus/pure here
+    # load olets/zsh-transient-prompt here
+    ```
 
-    ~/olets/zsh-transient-prompt main
+    Terminal (in real life this would have colors too)
+
+    ```
+    
+    ❯ echo transient prompt
+    transient prompt
+
+    ❯ cd ~/Projects/olets/my-git-repo
+
+    ~/Projects/olets/my-git-repo main*
+    ❯ 
+    ```
+
+1. Git-aware Pure-like prompt, using [Git Prompt Kit](https://git-prompt-kit.olets.dev/) for high-performance Git content. This enhances GPK's [Pure-like recipe](https://git-prompt-kit.olets.dev/recipes.html#pure-like).
+
+    ```shell
+    ###
+    # Pure-like Git Prompt Kit-driven prompt, from the zsh-transient-prompt README
+    ###
+
+    [[ $COLORTERM = *(24bit|truecolor)* ]] || zmodload zsh/nearcolor
+
+    GIT_PROMPT_KIT_COLOR_ACTION=242
+    GIT_PROMPT_KIT_COLOR_ASSUME_UNCHANGED=cyan
+    GIT_PROMPT_KIT_COLOR_CWD=blue
+    GIT_PROMPT_KIT_COLOR_FAILED=red
+    GIT_PROMPT_KIT_COLOR_HEAD="#6c6c6c"
+    GIT_PROMPT_KIT_COLOR_HOST=242
+    GIT_PROMPT_KIT_COLOR_REMOTE=cyan
+    GIT_PROMPT_KIT_COLOR_SKIP_WORKTREE=cyan
+    GIT_PROMPT_KIT_COLOR_STASH=cyan
+    GIT_PROMPT_KIT_COLOR_SUCCEEDED=magenta
+    GIT_PROMPT_KIT_COLOR_USER=242
+    GIT_PROMPT_KIT_CWD_MAX_TRAILING_COUNT=-1
+    GIT_PROMPT_KIT_GIT_STATUS_ON_OWN_LINE=0
+    GIT_PROMPT_KIT_REPO_SUBDIRECTORY_MAX_TRAILING_COUNT=-1
+    GIT_PROMPT_KIT_SHOW_INACTIVE_STATUS=0
+    GIT_PROMPT_KIT_SYMBOL_AHEAD=⇡
+    GIT_PROMPT_KIT_SYMBOL_BEHIND=⇣
+    GIT_PROMPT_KIT_SYMBOL_CHAR_NORMAL=❯
+    GIT_PROMPT_KIT_SYMBOL_STASH=≡
+
+    # Build prompt
+    TRANSIENT_PROMPT_PROMPT=$'\n'
+    TRANSIENT_PROMPT_PROMPT+='$GIT_PROMPT_KIT_CWD'
+    TRANSIENT_PROMPT_PROMPT+='${GIT_PROMPT_KIT_HEAD:+ $GIT_PROMPT_KIT_HEAD}'
+    TRANSIENT_PROMPT_PROMPT+='${GIT_PROMPT_KIT_ACTION:+ $GIT_PROMPT_KIT_ACTION}'
+    TRANSIENT_PROMPT_PROMPT+='${GIT_PROMPT_KIT_BEHIND:+ $GIT_PROMPT_KIT_BEHIND}'
+    TRANSIENT_PROMPT_PROMPT+='${GIT_PROMPT_KIT_AHEAD:+ $GIT_PROMPT_KIT_AHEAD}'
+    TRANSIENT_PROMPT_PROMPT+='${GIT_PROMPT_KIT_STATUS_EXTENDED:+ $GIT_PROMPT_KIT_STATUS_EXTENDED}'
+    TRANSIENT_PROMPT_PROMPT+=$'\n'
+    TRANSIENT_PROMPT_PROMPT+='$GIT_PROMPT_KIT_CHAR '
+    TRANSIENT_PROMPT_TRANSIENT_PROMPT+='$GIT_PROMPT_KIT_CHAR '
+
+    # load olets/git-prompt-kit here
+    # load olets/zsh-transient-prompt here
+    ```
+
+    Terminal (in real life this would have colors too. More Git information would be displayed than in real Pure, and more quickly.)
+
+    ```
+    
+    ❯ echo transient prompt
+    transient prompt
+
+    ❯ cd ~/Projects/olets/my-git-repo
+
+    ~/Projects/olets/my-git-repo main ⇡1
     ❯ 
     ```
 
@@ -164,4 +262,4 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ## Acknowledgments
 
-zsh-transient-prompt builds off Subhaditya Nath's [transient_prompt.zsh](https://gist.codeberg.org/subnut/3af65306fbecd35fe2dda81f59acf2b2), which extracts the transient prompt functionality of Roman Perepelitsa's [powerlevel10k](https://codeberg.org/romkatv/powerlevel10k).
+zsh-transient-prompt builds off Roman Perepelitsa's [powerlevel10k](https://codeberg.org/romkatv/powerlevel10k), via Subhaditya Nath's [transient_prompt.zsh](https://gist.codeberg.org/subnut/3af65306fbecd35fe2dda81f59acf2b2).
