@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 
 # zsh-transient-prompt
-# pre-alpha
-# April 26 2024
+# 1.0.0-beta.1
+# May 7 2024
 # https://codeberg.org/olets/zsh-transient-prompt
 # Copyright (©) 2024-present Henry Bley-Vroman
 
@@ -12,7 +12,7 @@ typeset -g TRANSIENT_PROMPT_TRANSIENT_PROMPT=${TRANSIENT_PROMPT_TRANSIENT_PROMPT
 typeset -g TRANSIENT_PROMPT_TRANSIENT_RPROMPT=${TRANSIENT_PROMPT_TRANSIENT_RPROMPT-$TRANSIENT_PROMPT_RPROMPT}
 typeset -gA TRANSIENT_PROMPT_ENV
 
-typeset -gr TRANSIENT_PROMPT_VERSION=pre-alpha
+typeset -gr TRANSIENT_PROMPT_VERSION=1.0.0-beta.1
 
 if ! [[ $(whence TRANSIENT_PROMPT_PRETRANSIENT) ]]; then
   function TRANSIENT_PROMPT_PRETRANSIENT() { true }
