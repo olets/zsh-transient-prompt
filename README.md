@@ -68,6 +68,12 @@ Option | Type | Default | Description
 `TRANSIENT_PROMPT_TRANSIENT_PROMPT` | scalar | `$TRANSIENT_PROMPT_PROMPT` | Previous command lines' prompt
 `TRANSIENT_PROMPT_TRANSIENT_RPROMPT` | scalar | `$TRANSIENT_PROMPT_RPROMPT` | Previous command lines' right prompt
 
+## Exported variables
+
+Option | Type | Description
+---|---|---
+`TRANSIENT_PROMPT_VERSION` | scalar | The running version of zsh-transient-prompt
+
 ## Recipes
 
 1. Basic:
