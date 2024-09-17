@@ -83,7 +83,7 @@ Option | Type | Description
     # Minimal prompt config from the zsh-transient-prompt README
     ###
 
-    # Prompt is a line break if this isn't the first command line, CWD, line break, `%` or -if user is privileged- `#`
+    # Prompt is a line break if this isn't the first command line, then CWD, then a line break, then `%` or -if user is privileged- `#`
     TRANSIENT_PROMPT_PROMPT='%(2v.'$'\n.)%~'$'\n''%# '
 
     # Right prompt is the previous command's non-zero exit code, if any, in bold red
@@ -133,8 +133,19 @@ Option | Type | Description
     # Transient prompt is the prompt character
     TRANSIENT_PROMPT_TRANSIENT_PROMPT=''
 
-    # Prompt is a line break if this isn't the first command line; the CWD; if in a Git repo, the branch or commit, number of commits ahead and/or behind, upstream if set, push remote and number of commits ahead/behind if it's distinct from the upstream, and up to one tag at HEAD; and the prompt character
-    TRANSIENT_PROMPT_PROMPT='%(2v.'$'\n.)$GIT_PROMPT_KIT_CWD ${GIT_PROMPT_KIT_REF:+$GIT_PROMPT_KIT_REF }$GIT_PROMPT_KIT_CHAR '
+    
+    # Transient prompt is the prompt character
+    TRANSIENT_PROMPT_TRANSIENT_PROMPT='$GIT_PROMPT_KIT_CHAR '
+
+    # Prompt is
+    # a line break if this isn't the first command line
+    TRANSIENT_PROMPT_PROMPT='%(2v.'$'\n.)'
+    # the CWD
+    TRANSIENT_PROMPT_PROMPT+='$GIT_PROMPT_KIT_CWD '
+    # if in a Git repo, the branch or commit, number of commits ahead and/or behind, upstream if set, push remote and number of commits ahead/behind if it's distinct from the upstream, and up to one tag at HEAD
+    TRANSIENT_PROMPT_PROMPT+='${GIT_PROMPT_KIT_REF:+$GIT_PROMPT_KIT_REF }'
+    # and the prompt character
+    TRANSIENT_PROMPT_PROMPT+='$GIT_PROMPT_KIT_CHAR '
 
     # load zsh's add-zsh-hook function here
     autoload -Uz add-zsh-hook
@@ -171,8 +182,12 @@ Option | Type | Description
     # Pure enhanced with transient prompt, from the zsh-transient-prompt README
     ###
 
+    # Prompt is the result of enabling Pure and then running `typeset -m $PROMPT`
     TRANSIENT_PROMPT_PROMPT=$'%F{${prompt_pure_colors[path]}}%~%f\n%{\C-M%}%(12V.%F{$prompt_pure_colors[virtualenv]}%12v%f .)%(?.%F{$prompt_pure_colors[prompt:success]}.%F{$prompt_pure_colors[prompt:error]})${prompt_pure_state[prompt]}%f '
+
+    # Transient prompt is the Pure prompt character, colored according to the command's return value
     TRANSIENT_PROMPT_TRANSIENT_PROMPT='%(12V.%F{$prompt_pure_colors[virtualenv]}%12v%f .)%(?.%F{$prompt_pure_colors[prompt:success]}.%F{$prompt_pure_colors[prompt:error]})${prompt_pure_state[prompt]} %f'
+
     # load sindresorhus/pure here
     # load olets/zsh-transient-prompt here
     ```
