@@ -111,3 +111,4 @@ function _transient_prompt_widget-zle-line-finish() {
 }
 
 _transient_prompt_init
+unfunction -m _transient_prompt_init
