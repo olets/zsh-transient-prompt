@@ -65,7 +65,7 @@ exec zsh
 
   Replace `<branch>` with a branch name. Good options are `main` (for the latest stable release), `next` (for the latest release, even if it isn't stable), or a major version for example `v1`.
 
-Then add `source path/to/zsh-transient-prompt.zsh-theme` to your `.zshrc` (replace `path/to/` with the real path), and restart zsh:
+Then add `source path/to/transient-prompt.zsh-theme` to your `.zshrc` (replace `path/to/` with the real path), and restart zsh:
 
 ```shell
 exec zsh
