@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 
 # zsh-transient-prompt
-# 1.0.0-beta.1
-# May 7 2024
+# 1.0.1
+# January 27 2025
 # https://codeberg.org/olets/zsh-transient-prompt
 # Copyright (©) 2024-present Henry Bley-Vroman
 
@@ -12,7 +12,7 @@ typeset -g TRANSIENT_PROMPT_TRANSIENT_PROMPT=${TRANSIENT_PROMPT_TRANSIENT_PROMPT
 typeset -g TRANSIENT_PROMPT_TRANSIENT_RPROMPT=${TRANSIENT_PROMPT_TRANSIENT_RPROMPT-$TRANSIENT_PROMPT_RPROMPT}
 typeset -gA TRANSIENT_PROMPT_ENV
 
-typeset -g TRANSIENT_PROMPT_VERSION=1.0.0-beta.1
+typeset -g TRANSIENT_PROMPT_VERSION=1.0.1
 
 if ! [[ $(whence TRANSIENT_PROMPT_PRETRANSIENT) ]]; then
   function TRANSIENT_PROMPT_PRETRANSIENT() { true }
@@ -98,9 +98,9 @@ function _transient_prompt_widget-zle-line-finish() {
 
   TRANSIENT_PROMPT_PRETRANSIENT
   _transient_prompt_toggle_transient 1
-  
+
   zle && zle reset-prompt && zle -R
-    
+
   # restore backed up context
   local key_saved
   for key in ${(k)TRANSIENT_PROMPT_ENV}; do

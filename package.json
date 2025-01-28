@@ -1,5 +1,6 @@
 {
   "name": "zsh-transient-prompt",
+  "version": "1.0.1",
   "author": "Henry Bley-Vroman <olets@olets.dev>",
   "repository": {
     "type": "git",
