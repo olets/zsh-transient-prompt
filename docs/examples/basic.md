@@ -1,5 +1,7 @@
 # Basic
 
+This example demonstrates distinct current and past [left] prompts and right prompts.
+
 - Prompt is a line break if this isn't the first command line, then CWD, then a line break, then `%` or -if user is privileged- `#`
 - Right prompt is the previous command's non-zero exit code, if any, in bold red
 - Transient prompt is `%` or -if user is privileged- `#`
