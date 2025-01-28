@@ -23,5 +23,3 @@ olets@olets.dev my-git-repo %
 See the zsh prompt expansion documentation <https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html> to learn about what dynamic information out-of-the-box zsh can display in prompts.
 
 To add transient prompt support to your existing prompt, start by running `typeset -m PROMPT`. Then in `.zshrc`, set `TRANSIENT_PROMPT_TRANSIENT_PROMPT` to that value, in single quotations (`''`).
-
-Read the [Recipes](/recipes) below for more.

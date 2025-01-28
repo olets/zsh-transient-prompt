@@ -195,7 +195,28 @@ export default defineConfig({
       { text: "Overview", link: "/" },
       { text: "Installation", link: "/installation" },
       { text: "Usage", link: "/usage" },
-      { text: "Recipes", link: "/recipes" },
+      {
+        text: "Examples",
+        collapsed: false,
+        items: [
+          {
+            text: "Basic",
+            link: "/examples/basic",
+          },
+          {
+            text: "Basic Git-aware",
+            link: "/examples/basic-git-aware",
+          },
+          {
+            text: "Enhance a 3rd-party theme",
+            link: "/examples/enhance-a-3rd-party-theme",
+          },
+          {
+            text: "Advanced Git-aware",
+            link: "/examples/advanced-git-aware",
+          },
+        ],
+      },
       { text: "Configuration", link: "/configuration" },
       { text: "Acknowledgments", link: "/acknowledgments" },
       { text: "Contributing", link: "/contributing" },

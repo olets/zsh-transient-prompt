@@ -1,4 +1,4 @@
-# Recipes
+# Examples
 
 ## Basic
 
