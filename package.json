@@ -4,12 +4,12 @@
   "author": "Henry Bley-Vroman <olets@olets.dev>",
   "repository": {
     "type": "git",
-    "url": "https://codeberg.org/olets/zsh-transient-prompt"
+    "url": "https://github.com/olets/zsh-transient-prompt"
   },
   "bugs": {
-    "url": "https://codeberg.org/olets/zsh-transient-prompt/issues"
+    "url": "https://github.com/olets/zsh-transient-prompt/issues"
   },
-  "homepage": "https://codeberg.org/olets/zsh-transient-prompt",
+  "homepage": "https://github.com/olets/zsh-transient-prompt",
   "keywords": [
     "zsh",
     "shell",

@@ -1,3 +1,3 @@
 # Contributing
 
-To learn about contributing to unocss-preset-css, visit <https://codeberg.org/olets/zsh-transient-prompt>.
+To learn about contributing to zsh-transient-prompt, visit <https://github.com/olets/zsh-transient-prompt>.

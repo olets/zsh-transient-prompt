@@ -55,12 +55,12 @@ exec zsh
 
 ## Manual
 
-- Either download the archive of the release of your choice from <https://codeberg.org/olets/zsh-transient-prompt/releases> and expand it. Follow the release notes.
+- Either download the archive of the release of your choice from <https://github.com/olets/zsh-transient-prompt/releases> and expand it. Follow the release notes.
 
 - or clone a single branch:
 
   ```shell
-  git clone https://codeberg.org/olets/zsh-transient-prompt  --single-branch --branch <branch> --depth 1
+  git clone https://github.com/olets/zsh-transient-prompt  --single-branch --branch <branch> --depth 1
   ```
 
   Replace `<branch>` with a branch name. Good options are `main` (for the latest stable release), `next` (for the latest release, even if it isn't stable), or a major version for example `v1`.

@@ -169,7 +169,7 @@ export default defineConfig({
 
     editLink: {
       pattern:
-        "https://codeberg.org/olets/zsh-transient-prompt/edit/main/packages/docs/src/:path",
+        "https://github.com/olets/zsh-transient-prompt/tree/main/docs/:path",
     },
 
     logo: "/images/zsh-transient-prompt-logo.jpg",
@@ -177,7 +177,7 @@ export default defineConfig({
     nav: [
       {
         text: "Source, Changelog, License",
-        link: "https://codeberg.org/olets/zsh-transient-prompt/",
+        link: "https://github.com/olets/zsh-transient-prompt/",
         target: "_self",
       },
       {

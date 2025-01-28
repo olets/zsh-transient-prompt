@@ -3,7 +3,7 @@
 # zsh-transient-prompt
 # 1.0.1
 # January 27 2025
-# https://codeberg.org/olets/zsh-transient-prompt
+# https://github.com/olets/zsh-transient-prompt
 # Copyright (©) 2024-present Henry Bley-Vroman
 
 typeset -g TRANSIENT_PROMPT_PROMPT=${TRANSIENT_PROMPT_PROMPT-$PROMPT}
