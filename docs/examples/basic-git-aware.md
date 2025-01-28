@@ -1,6 +1,6 @@
 # Basic Git-aware
 
-This example uses [Git Prompt Kit](https://git-prompt-kit.olets.dev/) for high-performance Git content. This enhances GPK's [basic example](https://git-prompt-kit.olets.dev/example.html).
+This example uses [Git Prompt Kit](https://git-prompt-kit.olets.dev/) for high-performance Git content. This enhances GPK's [basic example](https://git-prompt-kit.olets.dev/examples.html#use-git-prompt-kit-components-instead-of-opaque-code).
 
 - Transient prompt is the prompt character
 - Transient prompt is the prompt character
