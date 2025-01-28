@@ -9,7 +9,7 @@ outline: false
 
 ![zsh-transient-prompt splash card](/zsh-transient-prompt-card.jpg)
 
-**zsh-transient-prompt**: Add a transient prompt to your zsh command line — that is, make your current prompt different from past prompts. For example, past prompts might not need to show as much contextual information. Or you might want to put past commands on their own line, instead of prefixed by a prompt, for easy of selecting and copying.
+**zsh-transient-prompt**: Add a transient prompt to your zsh command line — that is, make your current prompt different from past prompts. For example, past prompts might not need to show as much contextual information. Or you might want to put past commands on their own line, instead of prefixed by a prompt, for easier selecting and copying.
 
 <!-- > &nbsp;
 >
