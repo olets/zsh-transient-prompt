@@ -2,7 +2,6 @@
 
 - Prompt is a line break if this isn't the first command line, then CWD, then a line break, then `%` or -if user is privileged- `#`
 - Right prompt is the previous command's non-zero exit code, if any, in bold red
-  TRANSIENT_PROMPT_RPROMPT='%(?..%B%F{1}%?%f%b)'
 - Transient prompt is `%` or -if user is privileged- `#`
 - Transient right prompt is empty
 
@@ -12,6 +11,7 @@
 ###
 
 TRANSIENT_PROMPT_PROMPT='%(2v.'$'\n.)%~'$'\n''%# '
+TRANSIENT_PROMPT_RPROMPT='%(?..%B%F{1}%?%f%b)'
 TRANSIENT_PROMPT_TRANSIENT_PROMPT='%# '
 TRANSIENT_PROMPT_TRANSIENT_RPROMPT=
 
