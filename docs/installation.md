@@ -55,7 +55,7 @@ exec zsh
 
 ## Manual
 
-- Either download the archive of the release of your choice from <https://github.com/olets/zsh-transient-prompt/releases> and expand it. Follow the release notes.
+- Either download the archive of the release of your choice from <https://github.com/olets/zsh-transient-prompt/releases> and expand it.
 
 - or clone a single branch:
 
