@@ -1,6 +1,6 @@
 # Advanced Git-aware
 
-An approximate recreation of Pure, using [Git Prompt Kit](https://git-prompt-kit.olets.dev/) for high-performance Git content. This enhances GPK's [Pure-like recipe](https://git-prompt-kit.olets.dev/examples.html#pure-like).
+An approximate recreation of Pure, using [Git Prompt Kit](https://git-prompt-kit.olets.dev/) for high-performance Git content. This enhances GPK's [Pure-like recipe](https://git-prompt-kit.olets.dev/recipes.html#pure-like).
 
 ```shell
 ###
