@@ -195,6 +195,7 @@ export default defineConfig({
       { text: "Overview", link: "/" },
       { text: "Installation", link: "/installation" },
       { text: "Usage", link: "/usage" },
+      { text: "Configuration", link: "/configuration" },
       {
         text: "Examples",
         collapsed: false,
@@ -217,7 +218,6 @@ export default defineConfig({
           },
         ],
       },
-      { text: "Configuration", link: "/configuration" },
       { text: "Acknowledgments", link: "/acknowledgments" },
       { text: "Contributing", link: "/contributing" },
     ],
