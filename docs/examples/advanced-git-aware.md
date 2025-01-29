@@ -43,6 +43,7 @@ TRANSIENT_PROMPT_PROMPT+='${GIT_PROMPT_KIT_BEHIND:+ $GIT_PROMPT_KIT_BEHIND}'
 TRANSIENT_PROMPT_PROMPT+='${GIT_PROMPT_KIT_AHEAD:+ $GIT_PROMPT_KIT_AHEAD}'
 TRANSIENT_PROMPT_PROMPT+='${GIT_PROMPT_KIT_STATUS_EXTENDED:+ $GIT_PROMPT_KIT_STATUS_EXTENDED}'
 TRANSIENT_PROMPT_PROMPT+=$'\n'
+TRANSIENT_PROMPT_PROMPT+='$GIT_PROMPT_KIT_CWD '
 TRANSIENT_PROMPT_PROMPT+='$GIT_PROMPT_KIT_CHAR '
 TRANSIENT_PROMPT_TRANSIENT_PROMPT+='$GIT_PROMPT_KIT_CHAR '
 
@@ -53,10 +54,10 @@ TRANSIENT_PROMPT_TRANSIENT_PROMPT+='$GIT_PROMPT_KIT_CHAR '
 Terminal (in real life this would have colors too. More Git information would be displayed than in real Pure, and more quickly.)
 
 ```
-❯ echo transient prompt
+~ ❯ echo transient prompt
 transient prompt
 
-❯ cd ~/Projects/olets/my-git-repo
+~ ❯ cd ~/Projects/olets/my-git-repo
 
 ~/Projects/olets/my-git-repo main ⇡1
 ❯
