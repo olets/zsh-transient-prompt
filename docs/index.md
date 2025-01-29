@@ -9,7 +9,60 @@ outline: false
 
 ![zsh-transient-prompt splash card](/zsh-transient-prompt-card.jpg)
 
-**zsh-transient-prompt**: Add a transient prompt to your zsh command line — that is, make your current prompt different from past prompts. For example, past prompts might not need to show as much contextual information. Or you might want to put past commands on their own line, instead of prefixed by a prompt, for easier selecting and copying.
+**zsh-transient-prompt**: Add a transient prompt to your zsh command line — that is, make your current command line's prompt different from past command lines' prompts. For example, past prompts might not need to show as much contextual information. Or you might want to put past commands on their own line, instead of prefixed by a prompt, for easier selecting and copying.
+
+What?
+
+For example, with the prompt
+
+```
+<time when drawn> <directory when drawn> <Git branch when drawn>
+%
+```
+
+and without transient prompt:
+
+1. Open a new terminal
+
+   ```
+   11:11:00 ~/olets/zsh-transient-prompt main
+   %
+   ```
+
+1. Run a command
+
+   ```
+   11:11:00 ~/olets/zsh-transient-prompt main
+   % echo hello world
+   hello world
+
+   11:11:47 ~/olets/zsh-transient-prompt main
+   %
+   ```
+
+Compare that to the same prompt, but with the transient prompt
+
+```
+<directory when drawn> %
+```
+
+1. Open a new terminal
+
+   ```
+   11:11:00 ~/olets/zsh-transient-prompt main
+   %
+   ```
+
+1. Run a command
+
+   ```
+   ~/olets/zsh-transient-prompt %
+   echo hello world
+   hello world
+
+   11:11:47 ~/olets/zsh-transient-prompt main
+   %
+   ```
 
 <!-- > &nbsp;
 >
