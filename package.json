@@ -22,6 +22,7 @@
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
+    "asciinema-player": "^3.9.0",
     "markdown-it-footnote": "^4.0.0",
     "vitepress": "^1.6.3"
   },
@@ -32,5 +33,8 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
+  },
+  "dependencies": {
+    "@nolebase/ui-asciinema": "^2.13.0"
   }
 }

@@ -13,14 +13,15 @@ outline: false
 
 What?
 
-For example, with the prompt
+<!--@include: ./parts/screencast.md -->
+
+Or walk through an example. Given the prompt
 
 ```
 <time when drawn> <directory when drawn> <Git branch when drawn>
-%
 ```
 
-and without transient prompt:
+without transient prompt this will happen:
 
 1. Open a new terminal
 
@@ -46,6 +47,8 @@ Compare that to the same prompt, but with the transient prompt
 <directory when drawn> %
 ```
 
+Now this happens:
+
 1. Open a new terminal
 
    ```
@@ -64,8 +67,8 @@ Compare that to the same prompt, but with the transient prompt
    %
    ```
 
-<!-- > &nbsp;
+> &nbsp;
 >
 > 💅 Don't want to write your own theme? Check out mine, [Hometown](https://hometown-prompt.olets.dev/). It supports transient prompt!
 >
-> &nbsp; -->
+> &nbsp;
