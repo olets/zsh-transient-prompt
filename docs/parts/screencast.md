@@ -112,7 +112,7 @@ git rebase —continue —no-edit
 <NuAsciinemaPlayer
   src="https://v4.hometown-prompt.olets.dev/hometown-prompt-v4-demo.cast"
   :preload="true"
-  controls="auto"
+  :controls="true"
   cols="95"
   rows="20"
   terminal-font-size="16px"
