@@ -5,7 +5,7 @@ import "asciinema-player/dist/bundle/asciinema-player.css";
 
 Here's a screencast of [Hometown prompt](https://hometown-prompt.olets.dev) as an example. When you "accept" the command line (that is, hit <kbd>Enter</kbd>) the prompt trims down.
 
-<!-- DUPE hometown-prompt-docs@v4 docs/parts/screencast.md, zsh-transient-prompt@v1 docs/parts/screencast.md -->
+<!-- DUPE hometown-prompt@v4 README.md hometown-prompt-docs@v4 docs/parts/screencast.md, zsh-transient-prompt@v1 docs/parts/screencast.md -->
 <details><summary>Toggle to show/hide an annotated transcript</summary>
 
 ```shell
