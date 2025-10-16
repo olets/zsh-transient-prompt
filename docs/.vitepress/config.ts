@@ -114,6 +114,14 @@ export default defineConfig({
         defer: "true",
       },
     ],
+    [
+      "script",
+      {
+        src: "https://loose-saluki.pikapod.net/script.js",
+        "data-website-id": "2519ca09-a457-4ffc-a09d-deaa4db8a474",
+        defer: "true",
+      },
+    ],
 
     // Font
     [

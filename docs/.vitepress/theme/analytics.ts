@@ -1,10 +1,11 @@
 declare global {
   interface Window {
     fathom: any;
+    umami: any;
   }
 }
 
-function trackLinksAndFathomEvents(): void {
+function trackLinksAndTrackedEvents(): void {
   if (typeof window === "undefined") {
     return;
   }
@@ -13,30 +14,32 @@ function trackLinksAndFathomEvents(): void {
 
   function getChildEls(el: HTMLElement): HTMLElement[] {
     return Array.from(
-      el.querySelectorAll("a, [data-fathom-event]"),
+      el.querySelectorAll("a, [data-track-event]"),
     ) as HTMLElement[];
   }
 
   function trackClick(els: HTMLElement[]): void {
     for (const el of els) {
-      if (el.getAttribute("data-fathom-initialized") === "true") {
+      if (el.getAttribute("data-track-initialized") === "true") {
         continue;
       }
 
       el.addEventListener("click", ({ currentTarget }) => {
         const currentTargetElement = currentTarget as HTMLElement;
 
-        const fathomEventId = [
+        const trackedEventId = [
           "Click",
           document.title,
-          currentTargetElement.getAttribute("data-fathom-event-id") ||
+          currentTargetElement.getAttribute("data-track-event-id") ||
             currentTargetElement.textContent,
         ].join("|");
 
-        window?.fathom?.trackEvent(fathomEventId);
+        window?.fathom?.trackEvent(trackedEventId);
+
+        window?.umami?.track(trackedEventId.substring(0, 50));
       });
 
-      el.setAttribute("data-fathom-initialized", "");
+      el.setAttribute("data-track-initialized", "");
     }
   }
 
@@ -56,7 +59,7 @@ function trackLinksAndFathomEvents(): void {
       const addedNodeElement = addedNode as HTMLElement;
 
       if (
-        addedNodeElement.hasAttribute("data-fathom-event-id") ||
+        addedNodeElement.hasAttribute("data-track-event-id") ||
         addedNodeElement.tagName === "A"
       ) {
         els.push(addedNodeElement);
@@ -79,4 +82,4 @@ function trackLinksAndFathomEvents(): void {
   trackClick(getChildEls(root));
 }
 
-export { trackLinksAndFathomEvents };
+export { trackLinksAndTrackedEvents };
